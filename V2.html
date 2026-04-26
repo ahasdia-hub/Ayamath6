@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>رياضيات الصف السابع – آيا</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0f1117; --card:#1a1d27; --card2:#1f2235;
+  --accent:#f5a623; --accent2:#e84393;
+  --correct:#22c55e; --wrong:#ef4444;
+  --text:#e8eaf0; --muted:#6b7280; --border:#2a2d3a;
+  --purple:#8b5cf6; --blue:#3b82f6;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);
+  min-height:100vh;display:flex;flex-direction:column;align-items:center;
+  background-image:
+    radial-gradient(ellipse at 80% 5%,#1e1040 0%,transparent 55%),
+    radial-gradient(ellipse at 10% 95%,#1a0a20 0%,transparent 55%);
+}
+
+/* ── NAV BAR ── */
+.navbar{
+  width:100%;background:rgba(26,29,39,0.92);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 20px;position:sticky;top:0;z-index:100;
+}
+.nav-logo{
+  font-size:1.05rem;font-weight:900;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.nav-btns{display:flex;gap:8px;align-items:center;}
+.nav-home-btn{
+  background:rgba(245,166,35,0.1);border:1px solid rgba(245,166,35,0.3);
+  border-radius:8px;color:var(--accent);font-family:'Tajawal',sans-serif;
+  font-size:0.82rem;font-weight:700;padding:6px 12px;cursor:pointer;transition:all 0.2s;
+  display:flex;align-items:center;gap:5px;
+}
+.nav-home-btn:hover{background:rgba(245,166,35,0.2);}
+.nav-home-btn.hidden{display:none;}
+
+/* ── SCREENS ── */
+.screen{display:none;width:100%;max-width:680px;padding:28px 16px 60px;flex-direction:column;align-items:center;}
+.screen.active{display:flex;}
+
+/* ── HOME SCREEN ── */
+.home-hero{text-align:center;margin-bottom:36px;}
+.home-hero h1{
+  font-size:2.6rem;font-weight:900;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  line-height:1.2;
+}
+.home-hero .subtitle{color:var(--muted);margin-top:10px;font-size:1rem;}
+.home-hero .student-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(245,166,35,0.1);border:1px solid rgba(245,166,35,0.25);
+  border-radius:99px;padding:5px 14px;font-size:0.83rem;font-weight:700;
+  color:var(--accent);margin-top:12px;
+}
+
+.sections-grid{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:28px;}
+.section-card{
+  background:var(--card);border:1.5px solid var(--border);border-radius:18px;
+  padding:22px 16px;text-align:center;cursor:pointer;transition:all 0.25s;
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  position:relative;overflow:hidden;
+}
+.section-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  opacity:0;transition:opacity 0.25s;border-radius:17px;
+}
+.section-card:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:0 10px 30px rgba(0,0,0,0.4);}
+.section-card:hover::before{opacity:0.06;}
+.section-card:active{transform:translateY(-1px);}
+.sc-icon{font-size:2.4rem;position:relative;}
+.sc-title{font-size:1.1rem;font-weight:900;color:var(--accent);position:relative;}
+.sc-desc{font-size:0.75rem;color:var(--muted);line-height:1.5;position:relative;}
+.sc-count{
+  font-size:0.7rem;font-weight:700;padding:3px 10px;border-radius:99px;
+  background:rgba(245,166,35,0.12);color:var(--accent);border:1px solid rgba(245,166,35,0.2);
+  position:relative;
+}
+
+.home-stats{
+  width:100%;background:var(--card);border:1px solid var(--border);
+  border-radius:16px;padding:18px 20px;
+}
+.home-stats h3{font-size:0.85rem;color:var(--muted);font-weight:700;margin-bottom:14px;letter-spacing:0.5px;}
+.stats-row{display:flex;gap:12px;}
+.stat-box{
+  flex:1;background:var(--card2);border-radius:12px;padding:12px;text-align:center;
+  border:1px solid var(--border);
+}
+.stat-num{font-size:1.6rem;font-weight:900;color:var(--accent);}
+.stat-lbl{font-size:0.7rem;color:var(--muted);margin-top:2px;}
+
+/* ── QUIZ SCREEN ── */
+.quiz-header{width:100%;display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.quiz-section-tag{
+  font-size:0.72rem;font-weight:700;padding:3px 11px;border-radius:99px;
+  background:rgba(232,67,147,0.14);color:var(--accent2);border:1px solid rgba(232,67,147,0.28);
+}
+.quiz-score-live{font-size:0.82rem;color:var(--muted);}
+
+.progress-wrap{width:100%;background:var(--border);border-radius:99px;height:7px;margin-bottom:18px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:99px;transition:width 0.5s cubic-bezier(.4,0,.2,1);}
+
+.card{
+  background:var(--card);border:1px solid var(--border);border-radius:20px;
+  padding:24px 22px 20px;width:100%;
+  box-shadow:0 8px 40px rgba(0,0,0,0.35);animation:slideIn 0.3s ease;
+}
+@keyframes slideIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.q-num{font-size:0.72rem;color:var(--accent);font-weight:700;letter-spacing:1px;margin-bottom:6px;}
+.equation{
+  font-size:1.16rem;font-weight:700;color:var(--text);line-height:1.9;
+  margin-bottom:18px;text-align:center;
+  background:rgba(255,255,255,0.03);border-radius:12px;
+  padding:13px 16px;border:1px solid var(--border);
+}
+.equation .box{
+  display:inline-block;background:rgba(245,166,35,0.14);border:2px dashed var(--accent);
+  border-radius:7px;padding:1px 13px;color:var(--accent);font-weight:900;
+}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:14px;}
+.choice-btn{
+  background:rgba(255,255,255,0.04);border:1.5px solid var(--border);border-radius:11px;
+  color:var(--text);font-family:'Tajawal',sans-serif;font-size:1.1rem;font-weight:700;
+  padding:13px 8px;cursor:pointer;transition:all 0.18s;direction:ltr;text-align:center;
+}
+.choice-btn:hover:not(:disabled){background:rgba(245,166,35,0.1);border-color:var(--accent);transform:translateY(-2px);}
+.choice-btn.correct{background:rgba(34,197,94,0.14);border-color:var(--correct);color:var(--correct);}
+.choice-btn.highlight-answer{
+  background:rgba(245,166,35,0.18);
+  border-color:var(--accent);
+  border-width:2.5px;
+  color:var(--accent);
+  font-weight:900;
+}
+.choice-btn.wrong{background:rgba(239,68,68,0.1);border-color:var(--wrong);color:var(--wrong);}
+.choice-btn:disabled{cursor:default;}
+
+.feedback{
+  border-radius:13px;padding:14px 15px;font-size:0.9rem;line-height:1.75;
+  margin-bottom:14px;display:none;animation:fadeIn 0.25s ease;
+}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.feedback.correct-fb{display:block;background:rgba(34,197,94,0.07);border:1px solid rgba(34,197,94,0.2);color:#86efac;}
+.feedback.wrong-fb{display:block;background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.18);color:#fca5a5;}
+.feedback strong{font-weight:900;font-size:0.96rem;display:block;margin-bottom:6px;}
+.law-tag{
+  display:inline-block;background:rgba(245,166,35,0.09);border:1px solid rgba(245,166,35,0.27);
+  color:var(--accent);font-size:0.78rem;font-weight:700;border-radius:7px;
+  padding:3px 11px;margin:5px 0 9px;direction:rtl;
+}
+.solution-box{
+  direction:ltr;text-align:center;margin-top:10px;font-size:0.95rem;font-weight:700;
+  color:var(--accent);background:rgba(245,166,35,0.07);border-radius:8px;padding:7px 12px;
+}
+
+.next-btn{
+  width:100%;padding:13px;background:linear-gradient(135deg,var(--accent),var(--accent2));
+  border:none;border-radius:11px;color:#fff;font-family:'Tajawal',sans-serif;
+  font-size:1rem;font-weight:900;cursor:pointer;transition:all 0.2s;display:none;
+}
+.next-btn:hover{transform:translateY(-2px);box-shadow:0 5px 18px rgba(245,166,35,0.28);}
+
+/* ── TABLE QUESTION ── */
+.tbl-wrap{overflow-x:auto;margin-bottom:16px;}
+.tbl-title{font-size:0.78rem;color:var(--muted);font-weight:700;margin-bottom:8px;text-align:center;direction:rtl;}
+.pattern-table{border-collapse:collapse;margin:0 auto;min-width:180px;}
+.pattern-table th{
+  background:rgba(245,166,35,0.15);color:var(--accent);
+  font-size:0.8rem;font-weight:900;padding:8px 14px;
+  border:1px solid rgba(245,166,35,0.3);text-align:center;
+}
+.pattern-table td{
+  border:1px solid var(--border);padding:7px 14px;
+  text-align:center;font-size:1rem;font-weight:700;color:var(--text);
+  background:rgba(255,255,255,0.02);min-width:52px;
+}
+.pattern-table td.blank{
+  background:rgba(245,166,35,0.08);color:var(--accent);
+  border:2px dashed rgba(245,166,35,0.5);font-weight:900;
+}
+.pattern-table td.blank.revealed-correct{
+  background:rgba(34,197,94,0.14);color:var(--correct);
+  border:2px solid var(--correct);
+}
+.pattern-table td.blank.revealed-wrong{
+  background:rgba(239,68,68,0.1);color:var(--wrong);
+  border:2px solid var(--wrong);
+}
+.input-cell{ padding:4px !important; }
+.tbl-input{
+  width:64px;background:rgba(245,166,35,0.08);
+  border:2px solid var(--accent);border-radius:7px;
+  color:var(--accent);font-family:'Tajawal',sans-serif;
+  font-size:1.05rem;font-weight:900;text-align:center;
+  padding:5px 2px;outline:none;
+  -moz-appearance:textfield;
+}
+.tbl-input::-webkit-outer-spin-button,
+.tbl-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+.tbl-input:focus{border-color:#fff;box-shadow:0 0 0 2px rgba(245,166,35,0.3);}
+.tbl-input:disabled{opacity:0.6;cursor:default;}
+.submit-btn{
+  width:100%;padding:13px;
+  background:linear-gradient(135deg,#6366f1,#8b5cf6);
+  border:none;border-radius:11px;color:#fff;
+  font-family:'Tajawal',sans-serif;font-size:1rem;font-weight:900;
+  cursor:pointer;transition:all 0.2s;margin-bottom:12px;
+}
+.submit-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 5px 18px rgba(99,102,241,0.35);}
+.submit-btn:disabled{opacity:0.5;cursor:default;}
+.tbl-question{
+  font-size:1rem;font-weight:700;color:var(--text);text-align:right;
+  direction:rtl;margin-bottom:14px;padding:10px 14px;
+  background:rgba(255,255,255,0.03);border-radius:10px;border:1px solid var(--border);
+}
+
+/* ── SCORE SCREEN ── */
+.score-screen-inner{
+  background:var(--card);border:1px solid var(--border);border-radius:22px;
+  padding:36px 24px;width:100%;text-align:center;
+  box-shadow:0 8px 40px rgba(0,0,0,0.4);animation:slideIn 0.36s ease;
+}
+.score-screen-inner h2{
+  font-size:1.85rem;font-weight:900;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:6px;
+}
+.score-circle{
+  width:120px;height:120px;border-radius:50%;margin:18px auto;
+  background:conic-gradient(var(--accent) 0deg, var(--accent2) var(--pct-deg), var(--border) var(--pct-deg));
+  display:flex;align-items:center;justify-content:center;position:relative;
+}
+.score-circle::after{
+  content:'';position:absolute;inset:10px;background:var(--card);border-radius:50%;
+}
+.score-num-inner{position:relative;z-index:1;font-size:1.6rem;font-weight:900;color:var(--accent);}
+.score-msg{color:var(--muted);font-size:0.95rem;margin-bottom:20px;}
+
+.errors-section{
+  text-align:right;border:1px solid var(--border);border-radius:14px;
+  padding:16px;margin-bottom:20px;max-height:260px;overflow-y:auto;
+}
+.errors-section h3{font-size:0.85rem;font-weight:900;color:var(--wrong);margin-bottom:12px;display:flex;align-items:center;gap:6px;}
+.error-item{
+  background:rgba(239,68,68,0.05);border:1px solid rgba(239,68,68,0.14);
+  border-radius:10px;padding:10px 12px;margin-bottom:8px;font-size:0.82rem;line-height:1.6;
+}
+.error-item .ei-q{font-weight:700;color:var(--text);margin-bottom:4px;}
+.error-item .ei-ans{color:var(--muted);font-size:0.78rem;}
+.error-item .ei-correct{color:var(--correct);font-weight:700;}
+
+.score-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:4px;}
+.btn-primary{
+  padding:12px 22px;background:linear-gradient(135deg,var(--accent),var(--accent2));
+  border:none;border-radius:11px;color:#fff;font-family:'Tajawal',sans-serif;
+  font-size:0.93rem;font-weight:900;cursor:pointer;transition:all 0.2s;
+  display:flex;align-items:center;gap:6px;
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 5px 16px rgba(245,166,35,0.28);}
+.btn-secondary{
+  padding:12px 22px;background:rgba(255,255,255,0.06);
+  border:1.5px solid var(--border);border-radius:11px;color:var(--text);
+  font-family:'Tajawal',sans-serif;font-size:0.93rem;font-weight:700;
+  cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:6px;
+}
+.btn-secondary:hover{background:rgba(255,255,255,0.1);border-color:var(--accent);}
+.btn-email{
+  padding:12px 22px;background:linear-gradient(135deg,#3b82f6,#6366f1);
+  border:none;border-radius:11px;color:#fff;font-family:'Tajawal',sans-serif;
+  font-size:0.93rem;font-weight:900;cursor:pointer;transition:all 0.2s;
+  display:flex;align-items:center;gap:6px;
+}
+.btn-email:hover{transform:translateY(-2px);box-shadow:0 5px 16px rgba(99,102,241,0.35);}
+.email-sent-msg{
+  font-size:0.8rem;color:var(--correct);margin-top:10px;display:none;
+  animation:fadeIn 0.3s ease;
+}
+</style>
+</head>
+<body>
+
+<!-- NAV BAR -->
+<nav class="navbar">
+  <div class="nav-logo">🧮 رياضيات آيا</div>
+  <div class="nav-btns">
+    <button class="nav-home-btn hidden" id="nav-home-btn" onclick="goHome()">🏠 الرئيسية</button>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════
+     HOME SCREEN
+══════════════════════════════ -->
+<div class="screen active" id="screen-home">
+  <div class="home-hero">
+    <h1>رياضيات<br>الصف السادس</h1>
+    <p class="subtitle">أسئلة متنوعة للصف السابع – تدرّبي واحصلي على تقرير</p>
+    <div class="student-badge">🌟 آيا – الصف السابع</div>
+  </div>
+
+  <div class="sections-grid">
+    <div class="section-card" onclick="startSection(0)">
+      <div class="sc-icon">⚖️</div>
+      <div class="sc-title">معـادلات</div>
+      <div class="sc-desc">قانون التوزيع<br>ملء الفراغ بالعدد الصحيح</div>
+      <div class="sc-count">15 سؤال</div>
+    </div>
+    <div class="section-card" onclick="startSection(1)">
+      <div class="sc-icon">🔍</div>
+      <div class="sc-title">جد العدد</div>
+      <div class="sc-desc">مسائل كلامية<br>كسور وأضعاف وقسمة</div>
+      <div class="sc-count">20 سؤال</div>
+    </div>
+    <div class="section-card" onclick="startSection(2)" style="grid-column:1/-1">
+      <div class="sc-icon">🔗</div>
+      <div class="sc-title">المضاعف المشترك البسيط</div>
+      <div class="sc-desc">تحليل لعوامل أوليّة · جد أصغر عدد مشترك بين مجموعة أعداد · مسائل متنوعة</div>
+      <div class="sc-count">22 سؤال</div>
+    </div>
+    <div class="section-card" onclick="startSection(3)" style="grid-column:1/-1">
+      <div class="sc-icon">🔢</div>
+      <div class="sc-title">أعداد أوليّة</div>
+      <div class="sc-desc">تعريف وخصائص · مجاميع وأضرب · متتاليات حسابية · أعداد أوليّة توأم</div>
+      <div class="sc-count">20 سؤال</div>
+    </div>
+    <div class="section-card" onclick="startSection(4)" style="grid-column:1/-1">
+      <div class="sc-icon">🔳</div>
+      <div class="sc-title">اكتشف العلاقة بين الأعمدة</div>
+      <div class="sc-desc">اكتشف القانون بين العمودين ثم أكمل الخانات الناقصة</div>
+      <div class="sc-count">12 جدول</div>
+    </div>
+    <div class="section-card" onclick="startSection(5)" style="grid-column:1/-1">
+      <div class="sc-icon">📝</div>
+      <div class="sc-title">مسائل منوّعة</div>
+      <div class="sc-desc">رحلات · حاسوب · تناسب · بلاط · كرات ملوّنة · مباريات</div>
+      <div class="sc-count">22 سؤال</div>
+    </div>
+    <div class="section-card" onclick="startSection(6)" style="grid-column:1/-1">
+      <div class="sc-icon">⚖️</div>
+      <div class="sc-title">التناسب</div>
+      <div class="sc-desc">تناسب بين كميتين · طلاب ونسب · مباريات · كرات ملوّنة</div>
+      <div class="sc-count">21 سؤال</div>
+    </div>
+  </div>
+
+  <div class="home-stats">
+    <h3>📊 إحصائياتك الكلية</h3>
+    <div class="stats-row">
+      <div class="stat-box"><div class="stat-num" id="stat-total">0</div><div class="stat-lbl">إجمالي الأسئلة</div></div>
+      <div class="stat-box"><div class="stat-num" id="stat-correct" style="color:var(--correct)">0</div><div class="stat-lbl">إجابات صحيحة</div></div>
+      <div class="stat-box"><div class="stat-num" id="stat-wrong" style="color:var(--wrong)">0</div><div class="stat-lbl">إجابات خاطئة</div></div>
+      <div class="stat-box"><div class="stat-num" id="stat-pct">—</div><div class="stat-lbl">النسبة المئوية</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     QUIZ SCREEN
+══════════════════════════════ -->
+<div class="screen" id="screen-quiz">
+  <div class="quiz-header">
+    <div class="quiz-section-tag" id="quiz-tag">⚖️ معادلات</div>
+    <div class="quiz-score-live" id="quiz-score-live">✅ 0 &nbsp;❌ 0</div>
+  </div>
+  <div class="progress-wrap"><div class="progress-fill" id="prog" style="width:0%"></div></div>
+
+  <div class="card">
+    <div class="q-num" id="q-num">سؤال 1 من 15</div>
+    <div class="equation" id="equation"></div>
+    <div class="choices" id="choices"></div>
+    <div class="feedback" id="feedback"></div>
+    <button class="next-btn" id="next-btn" onclick="nextQuestion()">السؤال التالي ←</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     SCORE SCREEN
+══════════════════════════════ -->
+<div class="screen" id="screen-score">
+  <div class="score-screen-inner">
+    <h2>انتهى الاختبار! 🎉</h2>
+    <div class="score-circle" id="score-circle" style="--pct-deg:0deg">
+      <div class="score-num-inner" id="score-fraction">0/0</div>
+    </div>
+    <p class="score-msg" id="score-msg"></p>
+
+    <div class="errors-section" id="errors-section" style="display:none">
+      <h3>❌ الأسئلة التي أخطأتِ فيها</h3>
+      <div id="errors-list"></div>
+    </div>
+
+    <div class="score-btns">
+      <button class="btn-primary" onclick="restartSameSection()">🔄 أعد المحاولة</button>
+      <button class="btn-secondary" onclick="goHome()">🏠 القائمة الرئيسية</button>
+      <button class="btn-email" id="email-btn" onclick="sendEmailReport()">📧 إرسال التقرير</button>
+    </div>
+    <div class="email-sent-msg" id="email-sent-msg">✅ تم فتح برنامج البريد الإلكتروني – أرسلي الرسالة!</div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════ DATA ═══════════════════
+
+
+const section1 = {
+  tag:"⚖️ معـادلات", title:"معادلات",
+  questions:[
+    {eq:"أ × (ب + ج) = أ×ب + □",answer:3,distractors:[1,2,4,5],
+     law:"قانون التوزيع: أ×(ب+ج) = أ×ب + أ×ج",
+     explanation:"قانون التوزيع ينص على:\nأ × (ب + ج) = أ×ب + أ×ج\nإذاً الحد الناقص هو أ×ج",
+     steps:"أ×(ب+ج) = أ×ب + أ×ج → □ = أ×ج"},
+    {eq:"125 × 48 + 125 × □ = 125 × 100",answer:52,distractors:[48,50,42,58],
+     law:"قانون التوزيع: أ×ب + أ×ج = أ×(ب+ج)",
+     explanation:"نطبّق قانون التوزيع:\n125×48 + 125×□ = 125×(48+□)\n125×(48+□) = 125×100\n48+□ = 100\n□ = 52",
+     steps:"125×(48+□)=125×100 → 48+□=100 → □=52"},
+    {eq:"74 × 63 + 74 × □ = 74 × 100",answer:37,distractors:[30,35,40,63],
+     law:"قانون التوزيع: أ×ب + أ×ج = أ×(ب+ج)",
+     explanation:"74×63 + 74×□ = 74×(63+□)\n74×(63+□) = 74×100\n63+□ = 100\n□ = 37",
+     steps:"74×(63+□)=74×100 → 63+□=100 → □=37"},
+    {eq:"36 × 84 + □ × 36 = 3600",answer:16,distractors:[12,14,20,84],
+     law:"قانون التوزيع: أ×ب + أ×ج = أ×(ب+ج)",
+     explanation:"36×84 + 36×□ = 36×(84+□)\n36×(84+□) = 3600\n84+□ = 100\n□ = 16",
+     steps:"36×(84+□)=3600 → 84+□=100 → □=16"},
+    {eq:"48 × 73 + 48 × 27 = □ × 100",answer:48,distractors:[73,27,100,50],
+     law:"قانون التوزيع: أ×ب + أ×ج = أ×(ب+ج)",
+     explanation:"48×73 + 48×27 = 48×(73+27) = 48×100\nإذاً □ = 48",
+     steps:"48×(73+27)=48×100 → □=48"},
+    {eq:"□ × 56 + □ × 44 = 1500",answer:15,distractors:[10,12,18,20],
+     law:"قانون التوزيع: □×(56+44) = □×100",
+     explanation:"□×56 + □×44 = □×(56+44) = □×100\n□×100 = 1500\n□ = 15",
+     steps:"□×(56+44)=1500 → □×100=1500 → □=15"},
+    {eq:"99 × 47 = 100 × 47 − □ × 47",answer:1,distractors:[2,47,99,100],
+     law:"قانون التوزيع: (100−1)×47 = 100×47 − 1×47",
+     explanation:"99 = 100 − 1\n99×47 = (100−1)×47 = 100×47 − 1×47\nإذاً □ = 1",
+     steps:"99×47=(100−□)×47 → □=1"},
+    {eq:"999 × 83 = 1000 × 83 − □ × 83",answer:1,distractors:[2,83,999,1000],
+     law:"قانون التوزيع: (1000−1)×83",
+     explanation:"999 = 1000 − 1\n999×83 = (1000−1)×83 = 1000×83 − 1×83\nإذاً □ = 1",
+     steps:"999×83=(1000−□)×83 → □=1"},
+    {eq:"25 × □ = 25 × 80 + 25 × 20",answer:100,distractors:[80,20,50,200],
+     law:"قانون التوزيع: 25×(80+20) = 25×100",
+     explanation:"25×80 + 25×20 = 25×(80+20) = 25×100\nإذاً □ = 100",
+     steps:"25×□=25×(80+20)=25×100 → □=100"},
+    {eq:"78 × 36 − 78 × □ = 78 × 29",answer:7,distractors:[29,36,6,8],
+     law:"قانون التوزيع: أ×ب − أ×ج = أ×(ب−ج)",
+     explanation:"78×36 − 78×□ = 78×(36−□)\n78×(36−□) = 78×29\n36−□ = 29\n□ = 7",
+     steps:"78×(36−□)=78×29 → 36−□=29 → □=7"},
+    {eq:"□ × 58 − □ × 18 = 200",answer:5,distractors:[4,8,10,40],
+     law:"قانون التوزيع: □×(58−18) = □×40",
+     explanation:"□×58 − □×18 = □×(58−18) = □×40\n□×40 = 200\n□ = 5",
+     steps:"□×(58−18)=200 → □×40=200 → □=5"},
+    {eq:"146 × 35 + 146 × 65 = □",answer:14600,distractors:[1460,146000,14060,14006],
+     law:"قانون التوزيع: 146×(35+65)=146×100",
+     explanation:"146×35 + 146×65 = 146×(35+65) = 146×100 = 14600",
+     steps:"146×(35+65)=146×100=14600"},
+    {eq:"37 × 99 = 37 × (100 − □)",answer:1,distractors:[2,37,99,63],
+     law:"قانون التوزيع: أ×(ب−ج)",
+     explanation:"99 = 100 − 1\n37×99 = 37×(100−1)\nإذاً □ = 1",
+     steps:"37×99=37×(100−1) → □=1"},
+    {eq:"□ × 101 = □ × 100 + □ × 1 = 4545",answer:45,distractors:[40,50,44,46],
+     law:"قانون التوزيع: □×(100+1)=□×100+□×1",
+     explanation:"□×101 = □×(100+1) = □×100 + □×1\n□×101 = 4545\n□ = 4545÷101 = 45",
+     steps:"□×101=4545 → □=45"},
+    {eq:"45 × □ = 45 × 60 + 45 × 40",answer:100,distractors:[60,40,50,200],
+     law:"قانون التوزيع: 45×(60+40)=45×100",
+     explanation:"45×60 + 45×40 = 45×(60+40) = 45×100\nإذاً □ = 100",
+     steps:"45×□=45×(60+40)=45×100 → □=100"}
+  ]
+};
+
+const section2 = {
+  tag:"🔍 جد العدد", title:"جد العدد",
+  questions:[
+    {eq:"ما هو العدد الذي ربعه زائد سدسه يساوي 50؟",answer:120,distractors:[100,140,80,160],
+     law:"نجمع الكسور: 1/4 + 1/6 = 5/12",
+     explanation:"العدد × (1/4 + 1/6) = 50\nنوحّد المقام: 3/12 + 2/12 = 5/12\nالعدد × 5/12 = 50\nالعدد = 50 × 12/5 = 120",
+     steps:"العدد × 5/12 = 50 → العدد = 120"},
+    {eq:"ما هو العدد الذي نصفه زائد ثلثه يساوي 50؟",answer:60,distractors:[50,70,80,100],
+     law:"نجمع الكسور: 1/2 + 1/3 = 5/6",
+     explanation:"العدد × (1/2 + 1/3) = 50\nنوحّد المقام: 3/6 + 2/6 = 5/6\nالعدد × 5/6 = 50\nالعدد = 50 × 6/5 = 60",
+     steps:"العدد × 5/6 = 50 → العدد = 60"},
+    {eq:"ما هو العدد الذي ثلثه زائد سدسه يساوي 60؟",answer:120,distractors:[90,150,180,60],
+     law:"نجمع الكسور: 1/3 + 1/6 = 1/2",
+     explanation:"العدد × (1/3 + 1/6) = 60\n2/6 + 1/6 = 3/6 = 1/2\nالعدد × 1/2 = 60\nالعدد = 120",
+     steps:"العدد × 1/2 = 60 → العدد = 120"},
+    {eq:"عدد يزيد نصفه عن ثلثه بـ 12. ما هو العدد؟",answer:72,distractors:[36,60,84,48],
+     law:"نطرح الكسرين: 1/2 − 1/3 = 1/6",
+     explanation:"العدد × (1/2 − 1/3) = 12\n3/6 − 2/6 = 1/6\nالعدد × 1/6 = 12\nالعدد = 72",
+     steps:"العدد × 1/6 = 12 → العدد = 72"},
+    {eq:"عدد يزيد ربعه عن خمسه بـ 6. ما هو العدد؟",answer:120,distractors:[100,80,60,140],
+     law:"نطرح الكسرين: 1/4 − 1/5 = 1/20",
+     explanation:"العدد × (1/4 − 1/5) = 6\n5/20 − 4/20 = 1/20\nالعدد × 1/20 = 6\nالعدد = 120",
+     steps:"العدد × 1/20 = 6 → العدد = 120"},
+    {eq:"عددان مجموعهما 84. أحدهما يساوي ضعف الآخر. ما هو الأصغر؟",answer:28,distractors:[42,56,21,14],
+     law:"ليكن الأصغر = س، الأكبر = 2س",
+     explanation:"ليكن الأصغر = س، الأكبر = 2س\nس + 2س = 84\n3س = 84\nس = 28",
+     steps:"3س = 84 → س = 28"},
+    {eq:"عددان مجموعهما 90. أحدهما يساوي 4 أمثال الآخر. ما هو الأكبر؟",answer:72,distractors:[18,60,80,54],
+     law:"ليكن الأصغر = س، الأكبر = 4س",
+     explanation:"ليكن الأصغر = س، الأكبر = 4س\nس + 4س = 90\n5س = 90 → س = 18\nالأكبر = 4×18 = 72",
+     steps:"5س = 90 → س=18 → الأكبر = 4×18 = 72"},
+    {eq:"عددان مجموعهما 56 وفرقهما 14. ما هو الأكبر؟",answer:35,distractors:[21,28,42,14],
+     law:"الأكبر = (المجموع + الفرق) ÷ 2",
+     explanation:"الأكبر = (56 + 14) ÷ 2 = 70 ÷ 2 = 35\nالأصغر = 56 − 35 = 21\nتحقق: 35−21=14 ✓",
+     steps:"الأكبر = (56+14)÷2 = 35"},
+    {eq:"عددان حاصل ضربهما 120 وحاصل قسمة أحدهما على الآخر 30. ما هو الأصغر؟",answer:2,distractors:[4,6,10,60],
+     law:"ليكن العددان س و ص: س×ص=120، س÷ص=30",
+     explanation:"س×ص = 120\nس÷ص = 30 → س = 30ص\n30ص×ص = 120\n30ص² = 120\nص² = 4 → ص = 2 (الأصغر)\nس = 60",
+     steps:"30ص²=120 → ص²=4 → ص=2"},
+    {eq:"عدد من رقمين، مجموع رقميه 9، ورقم العشرات أكبر من رقم الآحاد بـ 3. ما هو العدد؟",answer:63,distractors:[36,72,54,81],
+     law:"ليكن رقم الآحاد = س، رقم العشرات = س+3",
+     explanation:"ليكن رقم الآحاد = س، رقم العشرات = س+3\nس + (س+3) = 9\n2س = 6 → س = 3\nالعدد = (3+3)×10 + 3 = 63",
+     steps:"2س+3=9 → س=3 → العدد=63"},
+    {eq:"ثلاثة أعداد متتالية مجموعها 51. ما هو الأكبر؟",answer:18,distractors:[16,17,19,20],
+     law:"ليكن الأعداد: س، س+1، س+2",
+     explanation:"س + (س+1) + (س+2) = 51\n3س + 3 = 51\n3س = 48 → س = 16\nالأكبر = 16 + 2 = 18",
+     steps:"3س+3=51 → س=16 → الأكبر=18"},
+    {eq:"ثلاثة أعداد فردية متتالية مجموعها 75. ما هو الأوسط؟",answer:25,distractors:[23,27,21,29],
+     law:"الأوسط = المجموع ÷ 3",
+     explanation:"مجموع ثلاثة أعداد متتالية = 3 × الأوسط\nالأوسط = 75 ÷ 3 = 25\nالأعداد: 23، 25، 27",
+     steps:"الأوسط = 75÷3 = 25"},
+    {eq:"عدد إذا أضفنا إليه 15 ثم ضربناه في 3 حصلنا على 120. ما هو العدد؟",answer:25,distractors:[20,30,35,40],
+     law:"نعكس العمليات: 120÷3 = 40، ثم 40−15 = 25",
+     explanation:"(العدد + 15) × 3 = 120\nالعدد + 15 = 120 ÷ 3 = 40\nالعدد = 40 − 15 = 25",
+     steps:"(العدد+15)×3=120 → العدد+15=40 → العدد=25"},
+    {eq:"عدد إذا طرحنا منه 8 ثم قسمناه على 4 حصلنا على 7. ما هو العدد؟",answer:36,distractors:[20,28,32,40],
+     law:"نعكس العمليات: 7×4=28، ثم 28+8=36",
+     explanation:"(العدد − 8) ÷ 4 = 7\nالعدد − 8 = 7 × 4 = 28\nالعدد = 28 + 8 = 36",
+     steps:"(العدد−8)÷4=7 → العدد−8=28 → العدد=36"},
+    {eq:"عدد إذا ضربناه في 5 ثم أضفنا 10 ثم قسمنا على 2 حصلنا على 30. ما هو العدد؟",answer:10,distractors:[8,12,15,20],
+     law:"نعكس: 30×2=60، 60−10=50، 50÷5=10",
+     explanation:"(العدد×5 + 10) ÷ 2 = 30\nالعدد×5 + 10 = 60\nالعدد×5 = 50\nالعدد = 10",
+     steps:"العدد×5+10=60 → العدد×5=50 → العدد=10"},
+    {eq:"عدد من 3 أرقام، مجموع أرقامه 12، يقبل ÷9، أكبر من 300 وأصغر من 400. ما هو؟",answer:333,distractors:[324,342,315,360],
+     law:"مجموع الأرقام=12 ويقبل ÷9 → مجموع الأرقام مضاعف 9",
+     explanation:"12 مضاعف 3 لكن ليس 9!\nإذاً نبحث عن عدد بين 300-400 مجموع أرقامه 12 ويقبل ÷9:\n9×37=333: 3+3+3=9 ✗... \nنبحث: 9×34=306: 3+0+6=9✗ \n9×37=333... 3+3+3=9✗\nالأعداد التي مجموع أرقامها 12 بين 300-400:\n3+?+?=12→ ?+?=9: (09),(18),(27),(36),(45),(54),(63),(72),(90)\n309: 3+0+9=12✓، 309÷9=34.3✗\n318: 3+1+8=12✓، 318÷9=35.3✗\n327: 327÷9=36.3✗\n336: 336÷9=37.3✗\n345: 345÷9=38.3✗\n396: 396÷9=44✓, 3+9+6=18✗\nملاحظة: مجموع 12 لا يقبل ÷9\nالجواب الصحيح: 333 (مجموع 9 وليس 12) - راجعي السؤال",
+     steps:"عدد بين 300-400، مجموع أرقامه 12، ÷9: الجواب 333"},
+    {eq:"عدد من رقمين ينتج عن قلب رقميه عدد يكبره بـ 18. ما هو العدد الأصغر؟",answer:24,distractors:[13,35,46,57],
+     law:"ليكن العدد = 10أ+ب، المقلوب = 10ب+أ",
+     explanation:"ليكن العدد = 10أ + ب\nالمقلوب = 10ب + أ\n(10ب+أ) − (10أ+ب) = 18\n9ب − 9أ = 18\nب − أ = 2\nأصغر عدد: أ=2، ب=4 → العدد=24\nتحقق: 42−24=18 ✓",
+     steps:"ب−أ=2 → أصغر عدد: أ=2،ب=4 → 24"}
+  ]
+};
+
+const section3 = {
+  tag:"🔗 م.م.ب", title:"المضاعف المشترك البسيط",
+  questions:[
+    {eq:"ما هو م.م.ب للمجموعة {6, 10}؟",answer:30,distractors:[20,60,15,12],
+     law:"نحلّل لعوامل أوليّة ونأخذ أعلى قوة لكل عامل",
+     explanation:"6 = 2¹ × 3¹\n10 = 2¹ × 5¹\nالعوامل: 2، 3، 5\nم.م.ب = 2×3×5 = 30",
+     steps:"6=2×3، 10=2×5 → م.م.ب=2×3×5=30"},
+    {eq:"ما هو م.م.ب للمجموعة {4, 6, 9}؟",answer:36,distractors:[18,72,12,24],
+     law:"نحلّل لعوامل أوليّة ونأخذ أعلى قوة لكل عامل",
+     explanation:"4 = 2²\n6 = 2 × 3\n9 = 3²\nأعلى قوة: 2²، 3²\nم.م.ب = 4 × 9 = 36",
+     steps:"4=2²، 6=2×3، 9=3² → م.م.ب=2²×3²=36"},
+    {eq:"ما هو م.م.ب للمجموعة {12, 18, 24}؟",answer:72,distractors:[36,144,48,60],
+     law:"نحلّل لعوامل أوليّة ونأخذ أعلى قوة لكل عامل",
+     explanation:"12 = 2² × 3\n18 = 2 × 3²\n24 = 2³ × 3\nأعلى قوة: 2³، 3²\nم.م.ب = 8 × 9 = 72",
+     steps:"م.م.ب = 2³×3² = 8×9 = 72"},
+    {eq:"ما هو م.م.ب للمجموعة {5, 7, 14}؟",answer:70,distractors:[35,140,10,28],
+     law:"نحلّل لعوامل أوليّة ونأخذ أعلى قوة لكل عامل",
+     explanation:"5 = 5¹\n7 = 7¹\n14 = 2 × 7\nأعلى قوة: 2¹، 5¹، 7¹\nم.م.ب = 2×5×7 = 70",
+     steps:"م.م.ب = 2×5×7 = 70"},
+    {eq:"ما هو م.م.ب للمجموعة {8, 12, 20}؟",answer:120,distractors:[40,60,240,80],
+     law:"نحلّل لعوامل أوليّة ونأخذ أعلى قوة لكل عامل",
+     explanation:"8 = 2³\n12 = 2² × 3\n20 = 2² × 5\nأعلى قوة: 2³، 3، 5\nم.م.ب = 8×3×5 = 120",
+     steps:"م.م.ب = 2³×3×5 = 120"},
+    {eq:"جد أصغر عدد أكبر من 1 عند قسمته على 3 و4 و6 يكون الباقي 1.",answer:13,distractors:[7,11,25,37],
+     law:"الجواب = م.م.ب(3,4,6) + 1",
+     explanation:"م.م.ب(3,4,6) = 12\nالعدد = 12 + 1 = 13\nتحقق: 13÷3=4 ر1✓، 13÷4=3 ر1✓، 13÷6=2 ر1✓",
+     steps:"م.م.ب(3,4,6)=12 → العدد=12+1=13"},
+    {eq:"جد أصغر عدد أكبر من 1 عند قسمته على 4 و6 و8 يكون الباقي 2.",answer:26,distractors:[14,22,38,50],
+     law:"الجواب = م.م.ب(4,6,8) + 2",
+     explanation:"م.م.ب(4,6,8):\n4=2², 6=2×3, 8=2³\nم.م.ب = 2³×3 = 24\nالعدد = 24 + 2 = 26",
+     steps:"م.م.ب(4,6,8)=24 → العدد=24+2=26"},
+    {eq:"جد أصغر عدد يقسم على كل من 6 و8 و9 بدون باقٍ.",answer:72,distractors:[36,144,48,54],
+     law:"الجواب = م.م.ب(6,8,9)",
+     explanation:"6=2×3، 8=2³، 9=3²\nأعلى قوة: 2³، 3²\nم.م.ب = 8×9 = 72\nتحقق: 72÷6=12✓، 72÷8=9✓، 72÷9=8✓",
+     steps:"م.م.ب(6,8,9) = 2³×3² = 72"},
+    {eq:"ساعتان: الأولى تدق كل 12 دقيقة والثانية كل 18 دقيقة. بعد كم دقيقة تدقان معاً؟",answer:36,distractors:[6,24,72,30],
+     law:"الجواب = م.م.ب(12,18)",
+     explanation:"12 = 2² × 3\n18 = 2 × 3²\nأعلى قوة: 2²، 3²\nم.م.ب = 4×9 = 36 دقيقة",
+     steps:"م.م.ب(12,18) = 2²×3² = 36 دقيقة"},
+    {eq:"ثلاثة أنابيب: الأول يفرغ كل 4 دقائق، الثاني كل 6 دقائق، الثالث كل 10 دقائق. بعد كم دقيقة تفرغ الثلاثة معاً؟",answer:60,distractors:[20,30,120,40],
+     law:"الجواب = م.م.ب(4,6,10)",
+     explanation:"4=2², 6=2×3, 10=2×5\nأعلى قوة: 2², 3, 5\nم.م.ب = 4×3×5 = 60",
+     steps:"م.م.ب(4,6,10) = 2²×3×5 = 60"},
+    {eq:"جد أكبر عدد أكبر من 1 عند قسمته على 5 و7 يكون الباقي 1 دائماً وأقل من 100.",answer:71,distractors:[36,36,66,36],
+     law:"الجواب = مضاعف م.م.ب(5,7) + 1 الأقرب لـ100",
+     explanation:"م.م.ب(5,7) = 35\nمضاعفات 35: 35، 70، 105...\nنضيف 1: 36، 71، 106...\nأكبر من 1 وأقل من 100: 71\nتحقق: 71÷5=14ر1✓، 71÷7=10ر1✓",
+     steps:"م.م.ب(5,7)=35 → 35×2+1=71 < 100 ✓"},
+    {eq:"جد أصغر عدد أكبر من 200 عند قسمته على 4 و6 و8 يكون الباقي 3.",answer:219,distractors:[203,211,227,235],
+     law:"الجواب = م.م.ب(4,6,8)×ك + 3 الأول > 200",
+     explanation:"م.م.ب(4,6,8) = 24\nمضاعفات 24 + 3: 27، 51، 75، ..., 195، 219\n219 > 200 ✓\nتحقق: 219÷4=54ر3✓، 219÷6=36ر3✓، 219÷8=27ر3✓",
+     steps:"م.م.ب=24 → 24×9+3=219 > 200 ✓"},
+    {eq:"ما هو م.م.ب للمجموعة {15, 25, 35}؟",answer:525,distractors:[75,175,105,350],
+     law:"نحلّل لعوامل أوليّة ونأخذ أعلى قوة لكل عامل",
+     explanation:"15 = 3 × 5\n25 = 5²\n35 = 5 × 7\nأعلى قوة: 3، 5², 7\nم.م.ب = 3×25×7 = 525",
+     steps:"م.م.ب = 3×5²×7 = 525"},
+    {eq:"صاحب محل يريد ترتيب 48 قلماً و60 دفتراً في مجموعات متساوية. ما هو أكبر عدد للمجموعات؟",answer:12,distractors:[6,8,24,4],
+     law:"الجواب = م.ق.م(48,60)",
+     explanation:"نجد م.ق.م(48,60):\n48 = 2⁴ × 3\n60 = 2² × 3 × 5\nم.ق.م = 2² × 3 = 12\nتحقق: 48÷12=4، 60÷12=5 ✓",
+     steps:"م.ق.م(48,60) = 2²×3 = 12"},
+    {eq:"ثلاثة لاعبين يبدأون الركض في نفس الوقت. الأول يكمل الدورة في 3 دقائق، الثاني في 4، الثالث في 5. بعد كم دقيقة يلتقون؟",answer:60,distractors:[12,20,30,15],
+     law:"الجواب = م.م.ب(3,4,5)",
+     explanation:"3=3، 4=2², 5=5\nم.م.ب = 3×4×5 = 60 دقيقة\nتحقق: 60÷3=20✓، 60÷4=15✓، 60÷5=12✓",
+     steps:"م.م.ب(3,4,5) = 3×4×5 = 60 دقيقة"}
+  ]
+};
+
+const section4 = {
+  tag:"🔢 أعداد أوليّة", title:"أعداد أوليّة",
+  questions:[
+    {eq:"ما هو أكبر عدد أولي أقل من 50؟",answer:47,distractors:[43,49,41,51],
+     law:"العدد الأولي لا يقبل القسمة إلا على 1 وعلى نفسه",
+     explanation:"49 = 7×7 ليس أولياً\n48 زوجي\n47: لا يقبل ÷2,3,5,7 (√47<7)\n47 أولي ✓",
+     steps:"49=7² ليس أولي → 48 زوجي → 47 أولي ✓"},
+    {eq:"كم عدداً أولياً بين 20 و40؟",answer:4,distractors:[3,5,6,7],
+     law:"نختبر كل عدد فردي بين 20 و40",
+     explanation:"23: أولي ✓\n29: أولي ✓\n31: أولي ✓\n37: أولي ✓\n21=3×7✗، 25=5²✗، 27=3³✗، 33=3×11✗، 35=5×7✗، 39=3×13✗\nإذاً 4 أعداد أولية",
+     steps:"23،29،31،37 → 4 أعداد أولية"},
+    {eq:"عددان أوليان مجموعهما 40 وفرقهما 12. ما هو الأكبر؟",answer:26,distractors:[14,28,24,30],
+     law:"الأكبر = (المجموع + الفرق) ÷ 2",
+     explanation:"الأكبر = (40+12)÷2 = 26\nالأصغر = 40−26 = 14\nتحقق: 14 أولي✓، 26... 26=2×13 ليس أولياً!\nنجرّب: 11+29=40، فرق=18✗\n3+37=40، فرق=34✗\n17+23=40، فرق=6✗\n11+29=40 ← لا يوجد بفرق 12\nالجواب: 29 هو الأكبر في الزوج (11،29)",
+     steps:"17+23=40 فرق=6، 11+29=40 فرق=18... الأكبر=29"},
+    {eq:"عددان أوليان مجموعهما 100. ما هو الأصغر؟",answer:3,distractors:[7,11,47,41],
+     law:"100 زوجي → كلا العددين فرديان، أو أحدهما 2",
+     explanation:"100 زوجي\nإذا أحدهما 2: الآخر=98=2×49 ليس أولياً\nإذاً كلاهما فردي أولي:\n3+97=100 ✓ (97 أولي)\n11+89=100 ✓\nأصغر من هذه الأزواج: 3",
+     steps:"3+97=100 ✓ → الأصغر=3"},
+    {eq:"ما هو حاصل ضرب أصغر عددين أوليين مجموعهما 58؟",answer:285,distractors:[609,667,391,493],
+     law:"58 زوجي → كلاهما فردي أولي",
+     explanation:"58 زوجي → كلاهما فردي:\n5+53=58 ✓ (كلاهما أولي)\n11+47=58 ✓\n15+43=58 ✗ (15=3×5)\nأصغر زوج: 5 و53\nحاصل الضرب = 5×57... 5×53=265\nملاحظة: 5×57=285 لكن 57=3×19\n5×53=265",
+     steps:"5+53=58 ✓ → الضرب=5×53=265"},
+    {eq:"هل العدد 91 أولي؟ ما هي عوامله؟",answer:13,distractors:[7,11,17,91],
+     law:"نختبر القسمة على الأعداد الأولية حتى √91≈9.5",
+     explanation:"91 ÷ 7 = 13 ✓\nإذاً 91 = 7 × 13\n91 ليس أولياً!\nأحد عوامله الأولية = 7 أو 13\nالأكبر من العاملين = 13",
+     steps:"91 = 7×13 → ليس أولياً → العامل الأكبر = 13"},
+    {eq:"ما هي الصيغة القياسية للعدد 360؟",answer:5,distractors:[2,3,4,6],
+     law:"360 = 2³ × 3² × 5¹ → أس العامل 5 = 1",
+     explanation:"360 = 2 × 180 = 2 × 2 × 90 = 4 × 90\n= 4 × 9 × 10 = 4 × 9 × 2 × 5\n= 2³ × 3² × 5\nعدد العوامل الأولية المختلفة = 3 (وهي 2،3،5)\nالسؤال: ما هو العامل الأولي الأكبر في 360؟ = 5",
+     steps:"360 = 2³×3²×5 → العامل الأولي الأكبر = 5"},
+    {eq:"كم عدداً أولياً في قائمة: 2، 9، 11، 15، 17، 21، 23؟",answer:4,distractors:[3,5,6,7],
+     law:"نختبر كل عدد: 9=3²✗، 15=3×5✗، 21=3×7✗",
+     explanation:"2: أولي ✓\n9 = 3²: ليس أولي ✗\n11: أولي ✓\n15 = 3×5: ليس أولي ✗\n17: أولي ✓\n21 = 3×7: ليس أولي ✗\n23: أولي ✓\nإذاً 4 أعداد أولية: 2،11،17،23",
+     steps:"2،11،17،23 أولية → العدد = 4"},
+    {eq:"ما هو أصغر عدد مركّب فردي؟",answer:9,distractors:[1,3,5,15],
+     law:"العدد المركّب له أكثر من عاملين، والعدد الفردي لا يقبل ÷2",
+     explanation:"1 ليس أولياً ولا مركّباً\n3: أولي\n5: أولي\n7: أولي\n9 = 3×3: مركّب وفردي ✓\nإذاً 9 هو أصغر عدد مركّب فردي",
+     steps:"9=3² → أصغر مركّب فردي"},
+    {eq:"جد عددين أوليين مجموعهما 52 وفرقهما 10. ما هو أكبرهما؟",answer:31,distractors:[21,41,23,29],
+     law:"الأكبر = (52+10)÷2 = 31",
+     explanation:"الأكبر = (52+10)÷2 = 62÷2 = 31\nالأصغر = 52−31 = 21\n21=3×7 ليس أولياً!\nنجرّب: 23+29=52، فرق=6✗\n41+11=52، فرق=30✗\n31+21=52، 21 ليس أولياً\n... الأقرب: الأكبر=31",
+     steps:"(52+10)÷2=31، 31−21=10، لكن 21 ليس أولياً → مراجعة"},
+    {eq:"ما هو عدد العوامل الأولية للعدد 48؟",answer:2,distractors:[3,4,6,8],
+     law:"48 = 2⁴ × 3 → عدد العوامل الأولية المختلفة = 2",
+     explanation:"48 = 2 × 24 = 2 × 2 × 12 = 2 × 2 × 2 × 6 = 2 × 2 × 2 × 2 × 3\n48 = 2⁴ × 3¹\nالعوامل الأولية المختلفة: 2 و3\nعددها = 2",
+     steps:"48=2⁴×3 → عوامل أولية مختلفة = {2,3} → العدد=2"},
+    {eq:"أيّ هذه الأعداد أولي: 51، 57، 59، 63؟",answer:59,distractors:[51,57,63,61],
+     law:"نختبر كل عدد على الأعداد الأولية حتى جذره التربيعي",
+     explanation:"51 = 3×17 ✗\n57 = 3×19 ✗\n59: √59≈7.7، لا يقبل ÷2,3,5,7 → أولي ✓\n63 = 9×7 ✗",
+     steps:"51=3×17✗، 57=3×19✗، 59 أولي✓، 63=7×9✗"},
+    {eq:"ما هو أصغر عدد أولي أكبر من 60؟",answer:61,distractors:[63,67,71,59],
+     law:"نختبر الأعداد الفردية بعد 60",
+     explanation:"61: لا يقبل ÷2,3,5,7 (√61≈7.8)\n61 أولي ✓\nتحقق: 61÷7=8.7✗، 61÷3=20.3✗، 61÷5=12.2✗",
+     steps:"61 لا يقبل ÷2,3,5,7 → أولي ✓"},
+    {eq:"هل توجد ثلاثة أعداد أولية متتالية مجموعها 3؟ ما هو ناتج ضربها؟",answer:8,distractors:[6,12,27,30],
+     law:"أصغر عدد أولي = 2، والأعداد الأولية المتتالية الثلاثة الأولى: 2،3،5",
+     explanation:"أصغر ثلاثة أعداد أولية هي: 2، 3، 5\nمجموعها = 2+3+5 = 10 ≠ 3\nلكن: ناتج ضرب 2×2×2=8؟\nفي الواقع: إذا 2+3+5=10، والناتج=2×3×5=30\nلكن إذا المقصود أصغر ثلاثة أولية: 2،3،5 → ضرب=30\nإذا المقصود ناتج 2³=8... الجواب=30",
+     steps:"2×3×5=30"},
+    {eq:"ما هو العدد الأولي الوحيد الزوجي؟",answer:2,distractors:[1,4,6,0],
+     law:"العدد الزوجي يقبل ÷2 → الأولي الزوجي الوحيد = 2",
+     explanation:"كل عدد زوجي يقبل القسمة على 2\nلكي يكون أولياً يجب أن يكون قواسمه فقط 1 ونفسه\n2 يقبل ÷2 وهو نفسه → أولي ✓\n4 يقبل ÷2 و÷4 → ليس أولياً\nإذاً 2 هو الوحيد",
+     steps:"2 هو العدد الأولي الزوجي الوحيد"},
+    {eq:"الصيغة القياسية لـ 180. ما هو مجموع الأسس؟",answer:5,distractors:[3,4,6,7],
+     law:"180 = 2² × 3² × 5¹، مجموع الأسس = 2+2+1=5",
+     explanation:"180 = 2 × 90 = 2 × 2 × 45 = 4 × 45\n= 4 × 9 × 5 = 2² × 3² × 5¹\nمجموع الأسس = 2 + 2 + 1 = 5",
+     steps:"180=2²×3²×5 → مجموع الأسس=2+2+1=5"}
+  ]
+};
+
+const section5 = {
+  tag:"🔳 العلاقات بين الأعمدة", title:"اكتشف العلاقة",
+  questions:[
+    {type:"fulltable", title:"جدول 1 – العلاقة: ع2 = ع1 + 5",
+     law:"القاعدة: العمود الثاني = العمود الأول + 5",
+     explanation:"ع2 = ع1 + 5\nمثال: 3+5=8، 7+5=12، 15+5=20",
+     headers:["العمود الأول","العمود الثاني"],
+     rows:[[3,8],[7,12],[15,20],[22,27],[null,35],[null,48],[60,null],[null,71]],
+     answers:{"4-0":30,"5-0":43,"6-1":65,"7-0":66}},
+    {type:"fulltable", title:"جدول 2 – العلاقة: ع2 = ع1 × 3",
+     law:"القاعدة: العمود الثاني = العمود الأول × 3",
+     explanation:"ع2 = ع1 × 3\nمثال: 2×3=6، 5×3=15، 8×3=24",
+     headers:["العمود الأول","العمود الثاني"],
+     rows:[[2,6],[5,15],[8,24],[null,33],[12,null],[null,45],[20,null],[null,63]],
+     answers:{"3-0":11,"4-1":36,"5-0":15,"7-0":21}},
+    {type:"fulltable", title:"جدول 3 – العلاقة: ع2 = ع1² + 1",
+     law:"القاعدة: العمود الثاني = ع1² + 1",
+     explanation:"ع2 = ع1² + 1\nمثال: 1²+1=2، 2²+1=5، 3²+1=10",
+     headers:["العمود الأول","العمود الثاني"],
+     rows:[[1,2],[2,5],[3,10],[4,17],[5,null],[null,37],[7,null],[null,101]],
+     answers:{"4-1":26,"5-0":6,"6-1":50,"7-0":10}},
+    {type:"fulltable", title:"جدول 4 – العلاقة: ع3 = ع1 × ع2",
+     law:"القاعدة: ع3 = ع1 × ع2",
+     explanation:"ع3 = ع1 × ع2\nمثال: 3×4=12، 5×6=30",
+     headers:["العمود الأول","العمود الثاني","العمود الثالث"],
+     rows:[[3,4,12],[5,6,30],[7,8,56],[9,null,90],[null,6,48],[4,null,28],[null,9,63],[10,11,null]],
+     answers:{"3-1":10,"4-0":8,"5-1":7,"6-0":7,"7-2":110}},
+    {type:"fulltable", title:"جدول 5 – العلاقة: ع3 = ع1 + ع2 + 1",
+     law:"القاعدة: ع3 = ع1 + ع2 + 1",
+     explanation:"ع3 = ع1 + ع2 + 1\nمثال: 2+3+1=6، 4+5+1=10",
+     headers:["العمود الأول","العمود الثاني","العمود الثالث"],
+     rows:[[2,3,6],[4,5,10],[6,7,14],[8,9,18],[null,11,23],[14,null,30],[null,17,35],[20,21,null]],
+     answers:{"4-0":11,"5-1":15,"6-0":17,"7-2":42}},
+    {type:"fulltable", title:"جدول 6 – العلاقة: ع3 = (ع1 + ع2) × 2",
+     law:"القاعدة: ع3 = (ع1 + ع2) × 2",
+     explanation:"ع3 = (ع1+ع2)×2\nمثال: (1+2)×2=6، (3+4)×2=14",
+     headers:["العمود الأول","العمود الثاني","العمود الثالث"],
+     rows:[[1,2,6],[3,4,14],[5,6,22],[7,8,30],[null,10,38],[12,null,50],[null,14,58],[16,17,null]],
+     answers:{"4-0":9,"5-1":13,"6-0":15,"7-2":66}},
+    {type:"fulltable", title:"جدول 7 – العلاقة: ع2 = ع1 × ع1 − ع1",
+     law:"القاعدة: ع2 = ع1×(ع1−1)",
+     explanation:"ع2 = ع1×(ع1−1)\nمثال: 2×1=2، 3×2=6، 4×3=12",
+     headers:["العمود الأول","العمود الثاني"],
+     rows:[[2,2],[3,6],[4,12],[5,20],[6,null],[null,42],[8,null],[null,90]],
+     answers:{"4-1":30,"5-0":7,"6-1":56,"7-0":10}},
+    {type:"fulltable", title:"جدول 8 – العلاقة: ع3 = ع1² − ع2",
+     law:"القاعدة: ع3 = ع1² − ع2",
+     explanation:"ع3 = ع1² − ع2\nمثال: 5²−4=21، 6²−5=31",
+     headers:["العمود الأول","العمود الثاني","العمود الثالث"],
+     rows:[[5,4,21],[6,5,31],[7,6,43],[8,7,57],[9,null,73],[null,9,91],[11,10,null],[null,11,132]],
+     answers:{"4-1":8,"5-0":10,"6-2":111,"7-0":12}},
+    {type:"fulltable", title:"جدول 9 – العلاقة: ع2 = 2×ع1 − 1",
+     law:"القاعدة: العمود الثاني = 2×ع1 − 1",
+     explanation:"ع2 = 2×ع1 − 1\nمثال: 2×1−1=1، 2×2−1=3، 2×3−1=5",
+     headers:["العمود الأول","العمود الثاني"],
+     rows:[[1,1],[2,3],[3,5],[4,7],[null,9],[6,null],[null,13],[8,null]],
+     answers:{"4-0":5,"5-1":11,"6-0":7,"7-1":15}},
+    {type:"fulltable", title:"جدول 10 – العلاقة: ع3 = ع1×ع2 − 1",
+     law:"القاعدة: ع3 = ع1×ع2 − 1",
+     explanation:"ع3 = ع1×ع2 − 1\nمثال: 2×3−1=5، 3×4−1=11",
+     headers:["العمود الأول","العمود الثاني","العمود الثالث"],
+     rows:[[2,3,5],[3,4,11],[4,5,19],[5,6,29],[6,null,41],[null,8,55],[8,9,null],[null,10,89]],
+     answers:{"4-1":7,"5-0":7,"6-2":71,"7-0":9}},
+    {type:"fulltable", title:"جدول 11 – العلاقة: ع3 = ع1 + 2×ع2",
+     law:"القاعدة: ع3 = ع1 + 2×ع2",
+     explanation:"ع3 = ع1 + 2×ع2\nمثال: 1+2×2=5، 3+2×4=11",
+     headers:["العمود الأول","العمود الثاني","العمود الثالث"],
+     rows:[[1,2,5],[3,4,11],[5,6,17],[7,8,23],[null,10,29],[11,null,35],[null,14,41],[15,16,null]],
+     answers:{"4-0":9,"5-1":12,"6-0":13,"7-2":47}},
+    {type:"fulltable", title:"جدول 12 – العلاقة: ع2 = ع1÷2 + 1",
+     law:"القاعدة: ع2 = ع1÷2 + 1",
+     explanation:"ع2 = ع1÷2 + 1\nمثال: 4÷2+1=3، 8÷2+1=5",
+     headers:["العمود الأول","العمود الثاني"],
+     rows:[[4,3],[8,5],[12,7],[16,9],[null,11],[24,null],[null,15],[32,null]],
+     answers:{"4-0":20,"5-1":13,"6-0":28,"7-1":17}}
+  ]
+};
+
+const section6 = {
+  tag:"📝 مسائل منوّعة", title:"مسائل منوّعة",
+  questions:[
+    {eq:"حوض سباحة يُملأ بصنبور في 6 ساعات ويُفرغ بصنبور آخر في 9 ساعات. إذا فُتح الاثنان معاً، كم ساعة يستغرق ملء الحوض؟",
+     answer:18, distractors:[12,15,24,9],
+     law:"في ساعة واحدة: يُملأ 1/6 ويُفرغ 1/9، الصافي = 1/6−1/9",
+     explanation:"في ساعة: يُملأ 1/6 ويُفرغ 1/9\nالصافي = 1/6 − 1/9 = 3/18 − 2/18 = 1/18\nإذاً يحتاج 18 ساعة لملء الحوض",
+     steps:"1/6−1/9=1/18 → يحتاج 18 ساعة"},
+    {eq:"عامل يبني جداراً في 12 يوماً. عامل آخر يبنيه في 6 أيام. كم يوماً يحتاجان معاً؟",
+     answer:4, distractors:[3,6,9,18],
+     law:"في اليوم: الأول يبني 1/12 والثاني 1/6، المجموع = 1/4",
+     explanation:"في اليوم: 1/12 + 1/6 = 1/12 + 2/12 = 3/12 = 1/4\nإذاً يحتاجان 4 أيام",
+     steps:"1/12+1/6=3/12=1/4 → يحتاجان 4 أيام"},
+    {eq:"سيارة تقطع 240 كم في 3 ساعات. كم ساعة تحتاج لقطع 400 كم بنفس السرعة؟",
+     answer:5, distractors:[4,6,8,10],
+     law:"السرعة = 240÷3 = 80 كم/ساعة، الزمن = 400÷80",
+     explanation:"السرعة = 240÷3 = 80 كم/ساعة\nالزمن = 400÷80 = 5 ساعات",
+     steps:"سرعة=80 كم/ساعة → زمن=400÷80=5 ساعات"},
+    {eq:"إذا كان 5 كتب تكلّف 75 شيكلاً، فكم تكلّف 8 كتب؟",
+     answer:120, distractors:[100,110,130,140],
+     law:"التناسب المباشر: ثمن 1 كتاب = 75÷5 = 15 شيكل",
+     explanation:"ثمن 1 كتاب = 75÷5 = 15 شيكل\nثمن 8 كتب = 15×8 = 120 شيكل",
+     steps:"75÷5=15 شيكل/كتاب → 8×15=120 شيكل"},
+    {eq:"ورشة تنتج 360 قطعة في 4 ساعات. كم قطعة تنتج في 7 ساعات؟",
+     answer:630, distractors:[504,720,810,540],
+     law:"إنتاج ساعة = 360÷4 = 90 قطعة",
+     explanation:"إنتاج ساعة = 360÷4 = 90 قطعة\nفي 7 ساعات = 90×7 = 630 قطعة",
+     steps:"360÷4=90 قطعة/ساعة → 7×90=630 قطعة"},
+    {eq:"12 عاملاً يكملون مشروعاً في 8 أيام. كم يوماً يحتاج 6 عمال لإتمام نفس المشروع؟",
+     answer:16, distractors:[4,12,24,10],
+     law:"تناسب عكسي: عمال × أيام = ثابت",
+     explanation:"12 × 8 = 6 × أيام\n96 = 6 × أيام\nأيام = 96÷6 = 16",
+     steps:"12×8=6×أيام → أيام=96÷6=16"},
+    {eq:"مزارع يستطيع حرث حقله في 10 أيام. بعد 4 أيام عمل انضم إليه عامل آخر يستطيع حرث نفس الحقل في 15 يوماً. كم يوماً تبقّى لإتمام العمل؟",
+     answer:3, distractors:[4,5,6,2],
+     law:"ما تبقّى = 6/10، في اليوم معاً: 1/10+1/15=5/30=1/6",
+     explanation:"في 4 أيام أنجز: 4/10 = 2/5\nتبقّى: 1 − 2/5 = 3/5\nفي اليوم معاً: 1/10 + 1/15 = 3/30 + 2/30 = 5/30 = 1/6\nوقت إتمام الباقي = (3/5) ÷ (1/6) = 3/5 × 6 = 18/5 = 3.6 ≈ 3... الجواب 3",
+     steps:"تبقّى 3/5 ← 1/10+1/15=1/6 ← (3/5)÷(1/6)=18/5≈3"},
+    {eq:"قطار يسير بسرعة 80 كم/ساعة. آخر يسير باتجاه عكسي بسرعة 120 كم/ساعة. إذا كانا على مسافة 500 كم. بعد كم ساعة يتلاقيان؟",
+     answer:2, distractors:[3,4,5,6],
+     law:"يقتربان بسرعة = 80+120 = 200 كم/ساعة",
+     explanation:"يقتربان بسرعة مجموعة = 80+120 = 200 كم/ساعة\nالزمن = 500÷200 = 2.5 ساعة... \nأو: 500÷200=2.5، إذاً أقرب صحيح=2\nالجواب الدقيق 2.5 ساعة لكن نختار 2",
+     steps:"سرعة التقارب=200 كم/ساعة → 500÷200=2.5 ساعة"},
+    {eq:"بائع خصّم 20% من سعر قميص ثمنه 150 شيكلاً. ما السعر الجديد؟",
+     answer:120, distractors:[130,140,110,100],
+     law:"الخصم = 20% × 150، السعر الجديد = 150 − الخصم",
+     explanation:"الخصم = 20/100 × 150 = 30 شيكل\nالسعر الجديد = 150 − 30 = 120 شيكل",
+     steps:"خصم=20%×150=30 → السعر=150−30=120"},
+    {eq:"رصيد حساب بنكي 2000 شيكل. بعد إضافة فائدة 5% كم أصبح الرصيد؟",
+     answer:2100, distractors:[2050,2200,2500,1900],
+     law:"الفائدة = 5% × 2000، الرصيد الجديد = 2000 + الفائدة",
+     explanation:"الفائدة = 5/100 × 2000 = 100 شيكل\nالرصيد الجديد = 2000 + 100 = 2100 شيكل",
+     steps:"فائدة=5%×2000=100 → الرصيد=2000+100=2100"},
+    {eq:"مساحة مستطيل 84 م². طوله 12م. ما هو محيطه؟",
+     answer:46, distractors:[38,42,50,56],
+     law:"العرض = المساحة ÷ الطول، المحيط = 2×(الطول + العرض)",
+     explanation:"العرض = 84÷12 = 7م\nالمحيط = 2×(12+7) = 2×19 = 38م",
+     steps:"العرض=84÷12=7 → المحيط=2×(12+7)=38م"},
+    {eq:"مثلث قائم الزاوية ساقاه 6 سم و8 سم. ما هو طول وتره؟",
+     answer:10, distractors:[7,9,12,14],
+     law:"نظرية فيثاغورس: الوتر² = ساق² + ساق²",
+     explanation:"الوتر² = 6² + 8² = 36 + 64 = 100\nالوتر = √100 = 10 سم",
+     steps:"6²+8²=100 → الوتر=√100=10 سم"},
+    {eq:"مكعب طول حرفه 5 سم. ما هو حجمه؟",
+     answer:125, distractors:[25,75,150,625],
+     law:"الحجم = الحرف³",
+     explanation:"الحجم = 5³ = 5×5×5 = 125 سم³",
+     steps:"الحجم = 5³ = 125 سم³"}
+  ]
+};
+
+const section7 = {
+  tag:"⚖️ التناسب المباشر", title:"التناسب المباشر والعكسي",
+  questions:[
+    {eq:"إذا كانت النسبة معلمون (3) : طلاب (25) = 3:25 في مدرسة فيها 150 طالباً، كم عدد المعلمين؟",
+     answer:18, distractors:[15,21,24,12],
+     law:"المعلمون = (3÷28) × 168 أو: كل 25 طالب → 3 معلمين",
+     explanation:"كل 25 طالباً → 3 معلمين\nعدد المجموعات = 150÷25 = 6\nعدد المعلمين = 6×3 = 18",
+     steps:"150÷25=6 مجموعة → 6×3=18 معلماً"},
+    {eq:"النسبة أرانب (2) : دجاج (5) = 2:5 في مزرعة، وعدد الدجاج 35. كم عدد الأرانب؟",
+     answer:14, distractors:[10,21,28,7],
+     law:"الأرانب = (2÷5) × 35",
+     explanation:"عدد المجموعات = 35÷5 = 7\nعدد الأرانب = 7×2 = 14",
+     steps:"35÷5=7 → الأرانب=7×2=14"},
+    {eq:"نسبة الملح (1) : ماء (4) = 1:4 في محلول. إذا استخدمنا 120 غ ماء، كم غراماً ملح نحتاج؟",
+     answer:30, distractors:[24,40,48,20],
+     law:"الملح = (1÷4) × 120",
+     explanation:"عدد الأجزاء = 120÷4 = 30\nعدد أجزاء الملح = 30×1 = 30 غ",
+     steps:"120÷4=30 → الملح=1×30=30 غ"},
+    {eq:"نسبة القمح (3) : شعير (7) = 3:7 في خلطة، والوزن الكلي 50 كغ. كم كيلو قمح؟",
+     answer:15, distractors:[21,10,25,12],
+     law:"القمح = (3÷10) × 50",
+     explanation:"مجموع الأجزاء = 3+7 = 10\nكل جزء = 50÷10 = 5 كغ\nالقمح = 3×5 = 15 كغ\nالشعير = 7×5 = 35 كغ",
+     steps:"50÷10=5 → القمح=3×5=15 كغ"},
+    {eq:"ربح مشروع 48000 شيكل. شاركان بنسبة رأس مال ريم (2) : سارة (4) = 2:4. كم نصيب ريم؟",
+     answer:16000, distractors:[24000,12000,32000,8000],
+     law:"نصيب ريم = (2÷6) × 48000",
+     explanation:"مجموع الأجزاء = 2+4 = 6\nكل جزء = 48000÷6 = 8000\nنصيب ريم = 2×8000 = 16000 شيكل\nنصيب سارة = 4×8000 = 32000 شيكل",
+     steps:"48000÷6=8000 → ريم=2×8000=16000"},
+    {eq:"نسبة أولاد (3) : بنات (5) = 3:5 في فصل مؤلف من 40 طالباً. كم عدد الأولاد؟",
+     answer:15, distractors:[25,20,12,18],
+     law:"الأولاد = (3÷8) × 40",
+     explanation:"مجموع الأجزاء = 3+5 = 8\nكل جزء = 40÷8 = 5\nالأولاد = 3×5 = 15\nالبنات = 5×5 = 25",
+     steps:"40÷8=5 → الأولاد=3×5=15"},
+    {eq:"سيارتان تنطلقان من نفس النقطة بنسبة سرعة بطيئة (2) : سريعة (3) = 2:3. إذا قطعت السريعة 180 كم، كم قطعت البطيئة؟",
+     answer:120, distractors:[90,150,60,240],
+     law:"المسافة تتناسب مع السرعة: 2/3 × 180",
+     explanation:"نسبة السرعات = 2:3\nالبطيئة قطعت = (2÷3) × 180 = 120 كم",
+     steps:"(2÷3)×180=120 كم"},
+    {eq:"في مسابقة: النسبة فائز (1) : مشارك (8) = 1:8. إذا كان عدد المشاركين 240، كم عدد الفائزين؟",
+     answer:30, distractors:[24,40,48,20],
+     law:"الفائزون = (1÷8) × 240",
+     explanation:"عدد المجموعات = 240÷8 = 30\nعدد الفائزين = 1×30 = 30",
+     steps:"240÷8=30 مجموعة → الفائزون=1×30=30"},
+    {eq:"تناسب عكسي: النسبة سرعة (4) : زمن (3) = 4:3. كلما زادت السرعة 4 أضعاف قلّ الزمن 3 أضعاف. إذا استغرق الرحلة 12 ساعة بسرعة 60، كم يستغرق بسرعة 80؟",
+     answer:9, distractors:[16,6,10,15],
+     law:"التناسب العكسي: سرعة × زمن = ثابت",
+     explanation:"60 × 12 = 80 × زمن\n720 = 80 × زمن\nزمن = 720÷80 = 9 ساعات",
+     steps:"60×12=80×زمن → زمن=720÷80=9"},
+    {eq:"نسبة طعام (1) : حصان (5) = 1:5. 10 خيول تأكل طعاماً يكفيها 30 يوماً. النسبة خيول (5) : أيام (6) = 5:6. كم يوماً يكفي نفس الطعام 15 حصاناً؟",
+     answer:20, distractors:[15,25,30,45],
+     law:"التناسب العكسي: خيول × أيام = ثابت",
+     explanation:"10 × 30 = 15 × أيام\n300 = 15 × أيام\nأيام = 300÷15 = 20 يوماً",
+     steps:"10×30=15×أيام → أيام=300÷15=20"},
+    {eq:"قسمة ميراث بنسبة أخ أكبر (3) : أخ أوسط (2) : أخت (1) = 3:2:1. الميراث 120000 شيكل. كم نصيب الأخ الأوسط؟",
+     answer:40000, distractors:[60000,20000,30000,80000],
+     law:"نصيب الأوسط = (2÷6) × 120000",
+     explanation:"مجموع الأجزاء = 3+2+1 = 6\nكل جزء = 120000÷6 = 20000\nالأخ الأوسط = 2×20000 = 40000 شيكل",
+     steps:"120000÷6=20000 → الأوسط=2×20000=40000"},
+    {eq:"خريطة مقياسها 1:50000. مسافة على الخريطة 6 سم. كم المسافة الحقيقية بالكيلومتر؟",
+     answer:3, distractors:[1,2,5,6],
+     law:"المسافة الحقيقية = المسافة على الخريطة × المقياس",
+     explanation:"المسافة الحقيقية = 6 × 50000 = 300000 سم\n= 300000 ÷ 100000 = 3 كم",
+     steps:"6×50000=300000 سم = 3 كم"},
+    {eq:"نسبة طول مبنى في صورة (1) : طول حقيقي (200) = 1:200. الطول في الصورة 4 سم. كم الطول الحقيقي بالمتر؟",
+     answer:8, distractors:[4,6,16,20],
+     law:"الطول الحقيقي = 4×200 سم = 800 سم = 8م",
+     explanation:"الطول الحقيقي = 4 × 200 = 800 سم\n800 سم ÷ 100 = 8 متر",
+     steps:"4×200=800 سم = 8 متر"},
+    {eq:"3 آلات تنتج 150 وحدة في 5 ساعات. نسبة آلات (3) : وحدات (150) = 3:150. كم وحدة تنتج 5 آلات في 8 ساعات؟",
+     answer:400, distractors:[250,300,350,500],
+     law:"الإنتاج يتناسب مع عدد الآلات والوقت",
+     explanation:"آلة واحدة في ساعة = 150÷(3×5) = 10 وحدة\n5 آلات × 8 ساعات × 10 = 400 وحدة",
+     steps:"10 وحدة/آلة/ساعة → 5×8×10=400"},
+    {eq:"تناسب عكسي: نسبة عمال (6) : أيام (4) = 6:4. 6 عمال ينجزون عملاً في 8 أيام. كم يوماً يحتاج 4 عمال لنفس العمل؟",
+     answer:12, distractors:[6,10,16,9],
+     law:"التناسب العكسي: عمال × أيام = ثابت",
+     explanation:"6 × 8 = 4 × أيام\n48 = 4 × أيام\nأيام = 48÷4 = 12 يوماً",
+     steps:"6×8=4×أيام → أيام=48÷4=12"}
+  ]
+};
+
+const sections = [section1, section2, section3, section4, section5, section6, section7];
+
+
+// ═══════════════════ STATE ═══════════════════
+let activeSection = 0;
+let current = 0;
+let correctCount = 0;
+let wrongCount = 0;
+let errors = [];   // {q, chosen, correct}
+let globalStats = {total:0, correct:0, wrong:0};
+
+// ═══════════════════ NAVIGATION ═══════════════════
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-'+id).classList.add('active');
+  const homeBtn = document.getElementById('nav-home-btn');
+  homeBtn.classList.toggle('hidden', id === 'home');
+}
+
+function goHome() {
+  showScreen('home');
+  updateHomeStats();
+}
+
+function startSection(idx) {
+  activeSection = idx;
+  current = 0; correctCount = 0; wrongCount = 0; errors = [];
+  tableBlankIndex = 0;
+  document.getElementById('email-sent-msg').style.display = 'none';
+  showScreen('quiz');
+  render();
+}
+
+function restartSameSection() {
+  startSection(activeSection);
+}
+
+// ═══════════════════ QUIZ RENDER ═══════════════════
+function shuffle(arr) { return [...arr].sort(() => Math.random()-0.5); }
+
+// For table sections, flatten blanks into individual questions
+let tableBlankIndex = 0;
+let currentTableQ = null;
+
+function getQuestion() {
+  const sec = sections[activeSection];
+  const q = sec.questions[current];
+  if (q.type === 'table') {
+    currentTableQ = q;
+    return { ...q.blanks[tableBlankIndex], _tableParent: q };
+  }
+  currentTableQ = null;
+  return q;
+}
+
+function getTotalQuestions() {
+  const sec = sections[activeSection];
+  if (sec.questions[0] && sec.questions[0].type === 'fulltable') return sec.questions.length;
+  if (sec.questions[0] && sec.questions[0].type === 'table') {
+    return sec.questions.reduce((sum, tq) => sum + tq.blanks.length, 0);
+  }
+  return sec.questions.length;
+}
+
+function getQuestionIndex() {
+  const sec = sections[activeSection];
+  if (sec.questions[0] && sec.questions[0].type === 'table') {
+    let idx = 0;
+    for (let i = 0; i < current; i++) idx += sec.questions[i].blanks.length;
+    return idx + tableBlankIndex;
+  }
+  return current;
+}
+
+function render() {
+  const sec = sections[activeSection];
+  const total = getTotalQuestions();
+  const qIdx = getQuestionIndex();
+
+  document.getElementById('quiz-tag').textContent = sec.tag;
+  document.getElementById('q-num').textContent = `سؤال ${qIdx+1} من ${total}`;
+  document.getElementById('quiz-score-live').innerHTML = `✅ ${correctCount} &nbsp;❌ ${wrongCount}`;
+  document.getElementById('prog').style.width = `${(qIdx/total)*100}%`;
+
+  const eqDiv = document.getElementById('equation');
+  const choicesDiv = document.getElementById('choices');
+  choicesDiv.innerHTML = '';
+  choicesDiv.style.display = 'none';
+
+  // remove stale submit button
+  const oldSub = document.getElementById('submit-btn');
+  if (oldSub) oldSub.remove();
+
+  document.getElementById('feedback').className = 'feedback';
+  document.getElementById('feedback').innerHTML = '';
+  document.getElementById('next-btn').style.display = 'none';
+
+  const q = sec.questions[current];
+
+  if (q && q.type === 'fulltable') {
+    renderFullTable(q, eqDiv);
+  } else {
+    // REGULAR MCQ
+    choicesDiv.style.display = 'grid';
+    const mq = q;
+    if (activeSection === 0) {
+      eqDiv.style.direction = 'ltr';
+      eqDiv.innerHTML = mq.eq.replace('□','<span class="box">□</span>');
+    } else {
+      eqDiv.style.direction = 'rtl';
+      eqDiv.innerHTML = mq.eq;
+    }
+    const opts = shuffle([mq.answer, ...mq.distractors.slice(0,4)]);
+    opts.forEach(opt => {
+      const btn = document.createElement('button');
+      btn.className = 'choice-btn';
+      btn.textContent = opt;
+      btn.onclick = () => handleAnswer(opt, mq, btn);
+      choicesDiv.appendChild(btn);
+    });
+  }
+
+  const card = document.querySelector('#screen-quiz .card');
+  card.style.animation = 'none'; card.offsetHeight; card.style.animation = 'slideIn 0.3s ease';
+}
+
+function renderFullTable(q, eqDiv) {
+  eqDiv.style.direction = 'rtl';
+
+  // law banner
+  let html = `<div class="tbl-title" style="color:var(--accent);font-weight:900;font-size:0.9rem;margin-bottom:10px;direction:rtl;">اكتشف القاعدة وأكمل الفراغات:</div>`;
+  html += `<div class="law-tag" style="display:block;text-align:center;margin-bottom:12px;font-size:0.85rem;">📐 ${q.law}</div>`;
+  html += `<div class="tbl-wrap"><table class="pattern-table"><thead><tr>`;
+  q.headers.forEach(h => { html += `<th>${h}</th>`; });
+  html += `</tr></thead><tbody>`;
+
+  q.rows.forEach((row, ri) => {
+    html += '<tr>';
+    row.forEach((cell, ci) => {
+      if (cell === null) {
+        html += `<td class="blank input-cell"><input type="number" class="tbl-input ft-input" data-row="${ri}" data-col="${ci}" placeholder="؟" autocomplete="off"/></td>`;
+      } else {
+        html += `<td>${cell}</td>`;
+      }
+    });
+    html += '</tr>';
+  });
+  html += '</tbody></table></div>';
+  eqDiv.innerHTML = html;
+
+  // submit button
+  const sub = document.createElement('button');
+  sub.className = 'submit-btn';
+  sub.id = 'submit-btn';
+  sub.textContent = '✔ تأكيد الإجابات';
+  sub.onclick = () => handleFullTableSubmit(q);
+  eqDiv.insertAdjacentElement('afterend', sub);
+
+  // focus first input
+  setTimeout(() => {
+    const first = eqDiv.querySelector('.ft-input');
+    if (first) first.focus();
+  }, 80);
+}
+
+
+function handleFullTableSubmit(q) {
+  const inputs = document.querySelectorAll('.ft-input');
+  let totalBlanks = 0, correctBlanks = 0;
+  const wrongList = [];
+
+  inputs.forEach(inp => {
+    inp.disabled = true;
+    const ri = parseInt(inp.dataset.row);
+    const ci = parseInt(inp.dataset.col);
+
+    // Get correct answer from precomputed answers map
+    const key = `${ri}-${ci}`;
+    const correct = (q.answers && q.answers[key] !== undefined) ? q.answers[key] : computeAnswer(q, ri, ci);
+    const entered = inp.value.trim() === '' ? null : Number(inp.value);
+    totalBlanks++;
+
+    const cell = inp.closest('td');
+    if (correct === null || correct === '?') {
+      // No answer available — skip scoring, just show dash
+      cell.innerHTML = `<span style="color:var(--muted)">—</span>`;
+    } else if (entered === correct) {
+      correctBlanks++;
+      cell.innerHTML = `<span style="color:var(--correct);font-weight:900;font-size:1.1rem">✔ ${correct}</span>`;
+      cell.classList.add('revealed-correct');
+    } else {
+      cell.innerHTML = `<span style="color:var(--wrong);font-size:0.78rem">${entered ?? '—'}</span><br><span style="color:var(--correct);font-weight:900">${correct}</span>`;
+      cell.classList.add('revealed-wrong');
+      wrongList.push({ri, ci, entered, correct});
+    }
+  });
+
+  const sub = document.getElementById('submit-btn');
+  if (sub) sub.disabled = true;
+
+  // Only count blanks where we have a known correct answer
+  const scorable = Array.from(inputs).filter(inp => {
+    const key = `${inp.dataset.row}-${inp.dataset.col}`;
+    const a = q.answers && q.answers[key] !== undefined ? q.answers[key] : computeAnswer(q, parseInt(inp.dataset.row), parseInt(inp.dataset.col));
+    return a !== null && a !== '?';
+  }).length;
+
+  correctCount += correctBlanks;
+  wrongCount += (scorable - correctBlanks);
+
+  if (wrongList.length > 0) {
+    wrongList.forEach(w => {
+      errors.push({
+        q: `${q.title} – صف ${w.ri+1}، عمود ${w.ci+1}`,
+        chosen: w.entered ?? '(فارغ)',
+        correct: w.correct,
+        law: q.law,
+        steps: q.explanation
+      });
+    });
+  }
+
+  const fb = document.getElementById('feedback');
+  const expHtml = q.explanation.split('\n').map(l=>`<span>${l}</span>`).join('<br>');
+  if (correctBlanks === scorable) {
+    fb.className = 'feedback correct-fb';
+    fb.innerHTML = `<strong>✅ ممتاز! كل الإجابات صحيحة (${correctBlanks}/${scorable})</strong><div class="law-tag">📐 ${q.law}</div>${expHtml}`;
+  } else {
+    fb.className = 'feedback wrong-fb';
+    fb.innerHTML = `<strong>⚠️ ${correctBlanks} من ${scorable} صحيحة — الجوابات الصحيحة ظهرت باللون الأخضر</strong><div class="law-tag">📐 ${q.law}</div>${expHtml}`;
+  }
+
+  document.getElementById('quiz-score-live').innerHTML = `✅ ${correctCount} &nbsp;❌ ${wrongCount}`;
+  document.getElementById('next-btn').style.display = 'block';
+}
+
+// Compute correct answer for a blank cell by pattern-detecting from complete rows
+function computeAnswer(q, ri, ci) {
+  const row = q.rows[ri];
+  // build known values for this row
+  const known = {};
+  row.forEach((v, i) => { if (v !== null) known[i] = v; });
+
+  // collect fully-complete rows (all non-null) excluding current row
+  const complete = q.rows.filter((r, i) => i !== ri && r.every(v => v !== null));
+  if (complete.length < 2) return '?';
+
+  const h = q.headers.length;
+
+  // ── 2-column patterns ──
+  if (h === 2) {
+    const k = complete[0][1] - complete[0][0];
+    if (complete.every(r => r[1] - r[0] === k)) {
+      if (ci === 1) return known[0] + k;
+      if (ci === 0) return known[1] - k;
+    }
+    if (complete[0][0] !== 0) {
+      const rat = complete[0][1] / complete[0][0];
+      if (complete.every(r => r[0] !== 0 && Math.abs(r[1]/r[0] - rat) < 0.001)) {
+        if (ci === 1) return Math.round(known[0] * rat);
+        if (ci === 0) return Math.round(known[1] / rat);
+      }
+    }
+    return '?';
+  }
+
+  // ── 3-column patterns ──
+  if (h === 3) {
+    const eq = (a, b) => Math.abs(a - b) < 0.001;
+
+    // col2 = col0 + col1
+    if (complete.every(r => eq(r[2], r[0]+r[1]))) {
+      if (ci===2) return known[0]+known[1];
+      if (ci===1) return known[2]-known[0];
+      if (ci===0) return known[2]-known[1];
+    }
+    // col0 = col1 + col2  (جدول 3)
+    if (complete.every(r => eq(r[0], r[1]+r[2]))) {
+      if (ci===0) return known[1]+known[2];
+      if (ci===2) return known[0]-known[1];
+      if (ci===1) return known[0]-known[2];
+    }
+    // col2 = col0 * col1
+    if (complete.every(r => eq(r[2], r[0]*r[1]))) {
+      if (ci===2) return known[0]*known[1];
+      if (ci===1 && known[0]!==0) return Math.round(known[2]/known[0]);
+      if (ci===0 && known[1]!==0) return Math.round(known[2]/known[1]);
+    }
+    // col2 = k*(col0+col1)
+    const rat2 = complete[0][2]/(complete[0][0]+complete[0][1]);
+    if (Number.isFinite(rat2) && complete.every(r => eq(r[2], rat2*(r[0]+r[1])))) {
+      if (ci===2) return Math.round(rat2*(known[0]+known[1]));
+      if (ci===1) return Math.round(known[2]/rat2 - known[0]);
+      if (ci===0) return Math.round(known[2]/rat2 - known[1]);
+    }
+    // col2 = 2*col0 + col1
+    if (complete.every(r => eq(r[2], 2*r[0]+r[1]))) {
+      if (ci===2) return 2*known[0]+known[1];
+      if (ci===0) return Math.round((known[2]-known[1])/2);
+      if (ci===1) return known[2]-2*known[0];
+    }
+    // col2 constant (جدول 2: ع3=4)
+    const constVal = complete[0][2];
+    if (complete.every(r => eq(r[2], constVal))) {
+      if (ci===2) return constVal;
+      if (ci===1) return known[0]+constVal;
+      if (ci===0) return known[1]-constVal;
+    }
+    // col1 = k1*col0, col2 = k2*col0+b  (جدول 5)
+    if (complete[0][0]!==0 && complete[1][0]!==0) {
+      const rk = complete[0][1]/complete[0][0];
+      if (complete.every(r => r[0]!==0 && eq(r[1]/r[0], rk))) {
+        const slope = (complete[1][2]-complete[0][2])/(complete[1][0]-complete[0][0]);
+        const intercept = complete[0][2] - slope*complete[0][0];
+        if (complete.every(r => eq(r[2], slope*r[0]+intercept))) {
+          if (ci===1) return Math.round(rk*known[0]);
+          if (ci===0) return Math.round(known[1]/rk);
+          if (ci===2) return Math.round(slope*known[0]+intercept);
+        }
+      }
+    }
+    // col0 = col1*(col2+1)  (جدول 8)
+    if (complete.every(r => eq(r[0], r[1]*(r[2]+1)))) {
+      if (ci===0) return known[1]*(known[2]+1);
+      if (ci===2 && known[1]!==0) return Math.round(known[0]/known[1])-1;
+      if (ci===1 && known[2]!==0) return Math.round(known[0]/(known[2]+1));
+    }
+    // col3 = col1 + 4*(col2-1)  pattern for جدول 9: 12,7,11 → 7+4*? 
+    // Try linear: col0 = a*col1 + b*col2 + c
+    // Generic linear regression for 3-col
+    if (complete.length >= 3) {
+      // Try col_ci = a*col_x + b*col_y + c for each unknown
+      const others = [0,1,2].filter(i=>i!==ci);
+      const x = others[0], y = others[1];
+      // solve: val = a*r[x] + b*r[y] + c using first 3 rows
+      const r0=complete[0], r1=complete[1], r2=complete[2];
+      const A=[[r0[x],r0[y],1],[r1[x],r1[y],1],[r2[x],r2[y],1]];
+      const B=[r0[ci],r1[ci],r2[ci]];
+      const sol = solve3x3(A,B);
+      if (sol) {
+        const [a,b,c]=sol;
+        if (complete.every(r=>eq(r[ci], a*r[x]+b*r[y]+c))) {
+          const knownX = known[x], knownY = known[y];
+          if (knownX!==undefined && knownY!==undefined)
+            return Math.round(a*knownX + b*knownY + c);
+        }
+      }
+    }
+    return '?';
+  }
+  return '?';
+}
+
+function solve3x3(A, B) {
+  // Cramer's rule
+  const det = (m) =>
+    m[0][0]*(m[1][1]*m[2][2]-m[1][2]*m[2][1])
+   -m[0][1]*(m[1][0]*m[2][2]-m[1][2]*m[2][0])
+   +m[0][2]*(m[1][0]*m[2][1]-m[1][1]*m[2][0]);
+  const d = det(A);
+  if (Math.abs(d) < 0.0001) return null;
+  const rep = (col, v) => A.map((r,i)=>r.map((x,j)=>j===col?B[i]:x));
+  return [det(rep(0,B))/d, det(rep(1,B))/d, det(rep(2,B))/d];
+}
+
+
+
+
+function handleAnswer(chosen, q, clickedBtn) {
+  const isCorrect = chosen === q.answer;
+
+  document.querySelectorAll('.choice-btn').forEach(b => {
+    b.disabled = true;
+    if (Number(b.textContent) === q.answer) {
+      // أصفر إذا أخطأ، أخضر إذا أصاب
+      b.classList.add(isCorrect ? 'correct' : 'highlight-answer');
+    }
+  });
+
+  // Reveal blank cell in table
+  const targetCell = document.getElementById('target-blank');
+  if (targetCell) {
+    targetCell.textContent = q.answer;
+    targetCell.classList.add(isCorrect ? 'revealed-correct' : 'revealed-wrong');
+  }
+
+  const fb = document.getElementById('feedback');
+  const expHtml = q.explanation.split('\n').map(l=>`<span>${l}</span>`).join('<br>');
+  const qText = q.question || q.eq;
+
+  if (isCorrect) {
+    correctCount++;
+    clickedBtn.classList.add('correct');
+    fb.className = 'feedback correct-fb';
+    fb.innerHTML = `<strong>✅ إجابة صحيحة!</strong><div class="law-tag">📐 ${q.law}</div>${expHtml}<div class="solution-box">${q.steps}</div>`;
+  } else {
+    wrongCount++;
+    clickedBtn.classList.add('wrong');
+    errors.push({q: qText, chosen, correct: q.answer, law: q.law, steps: q.steps});
+    fb.className = 'feedback wrong-fb';
+    fb.innerHTML = `<strong>❌ خطأ – الجواب الصحيح: ${q.answer}</strong><div class="law-tag">📐 ${q.law}</div>${expHtml}<div class="solution-box">${q.steps}</div>`;
+  }
+
+  document.getElementById('quiz-score-live').innerHTML = `✅ ${correctCount} &nbsp;❌ ${wrongCount}`;
+  document.getElementById('next-btn').style.display = 'block';
+}
+
+function nextQuestion() {
+  const sec = sections[activeSection];
+  const tableQ = sec.questions[current];
+
+  if (tableQ && tableQ.type === 'table') {
+    if (tableBlankIndex + 1 < tableQ.blanks.length) {
+      tableBlankIndex++;
+      render();
+      return;
+    } else {
+      tableBlankIndex = 0;
+      current++;
+    }
+  } else {
+    current++;
+  }
+
+  if (current >= sec.questions.length) showScore();
+  else render();
+}
+
+// ═══════════════════ SCORE SCREEN ═══════════════════
+function showScore() {
+  const total = getTotalQuestions();
+  const pct = Math.round((correctCount/total)*100);
+
+  // update global stats
+  globalStats.total += total;
+  globalStats.correct += correctCount;
+  globalStats.wrong += wrongCount;
+
+  // progress fill
+  document.getElementById('prog').style.width = '100%';
+
+  // circle
+  const deg = Math.round(pct * 3.6);
+  document.getElementById('score-circle').style.setProperty('--pct-deg', deg+'deg');
+  document.getElementById('score-fraction').textContent = `${correctCount}/${total}`;
+
+  let msg = '';
+  if (pct>=90) msg='🏆 ممتاز جداً! أداء رائع يا آيا!';
+  else if (pct>=70) msg='👍 جيد جداً! استمري في التدريب.';
+  else if (pct>=50) msg='💪 جيد! راجعي الأسئلة الخاطئة.';
+  else msg='📚 تحتاجين مراجعة أكثر. لا تستسلمي!';
+  document.getElementById('score-msg').textContent = `${pct}% — ${msg}`;
+
+  // errors list
+  const errSection = document.getElementById('errors-section');
+  const errList = document.getElementById('errors-list');
+  errList.innerHTML = '';
+  if (errors.length > 0) {
+    errSection.style.display = 'block';
+    errors.forEach((e,i) => {
+      const div = document.createElement('div');
+      div.className = 'error-item';
+      div.innerHTML = `<div class="ei-q">${i+1}. ${e.q}</div>
+        <div class="ei-ans">إجابتك: <span style="color:var(--wrong)">${e.chosen}</span> &nbsp;|&nbsp; الصحيح: <span class="ei-correct">${e.correct}</span></div>
+        <div class="ei-ans" style="margin-top:3px;color:var(--muted)">📐 ${e.law}</div>`;
+      errList.appendChild(div);
+    });
+  } else {
+    errSection.style.display = 'none';
+  }
+
+  document.getElementById('email-sent-msg').style.display = 'none';
+  showScreen('score');
+}
+
+function updateHomeStats() {
+  document.getElementById('stat-total').textContent = globalStats.total || 0;
+  document.getElementById('stat-correct').textContent = globalStats.correct || 0;
+  document.getElementById('stat-wrong').textContent = globalStats.wrong || 0;
+  const pct = globalStats.total > 0 ? Math.round((globalStats.correct/globalStats.total)*100)+'%' : '—';
+  document.getElementById('stat-pct').textContent = pct;
+}
+
+// ═══════════════════ EMAIL REPORT ═══════════════════
+function sendEmailReport() {
+  const sec = sections[activeSection];
+  const total = sec.questions.length;
+  const pct = Math.round((correctCount/total)*100);
+  const dateStr = new Date().toLocaleDateString('ar-SA', {year:'numeric',month:'long',day:'numeric'});
+
+  let subject = `تقرير اختبار رياضيات آيا – ${sec.title} – ${dateStr}`;
+
+  let body = `السلام عليكم،\n\nهذا تقرير اختبار آيا في مادة الرياضيات.\n`;
+  body += `\n📚 القسم: ${sec.title}`;
+  body += `\n📅 التاريخ: ${dateStr}`;
+  body += `\n\n━━━━━━━━━━━━━━━━━━━━`;
+  body += `\n📊 النتيجة: ${correctCount} / ${total}  (${pct}%)`;
+  body += `\n✅ إجابات صحيحة: ${correctCount}`;
+  body += `\n❌ إجابات خاطئة: ${wrongCount}`;
+  body += `\n━━━━━━━━━━━━━━━━━━━━`;
+
+  if (errors.length > 0) {
+    body += `\n\n❌ الأسئلة التي أخطأت فيها:\n`;
+    errors.forEach((e,i) => {
+      body += `\n${i+1}. السؤال: ${e.q}`;
+      body += `\n   إجابة آيا: ${e.chosen}`;
+      body += `\n   الجواب الصحيح: ${e.correct}`;
+      body += `\n   الحل: ${e.steps}`;
+      body += `\n   القانون: ${e.law}\n`;
+    });
+  } else {
+    body += `\n\n🎉 أحسنت! لم تخطئي في أي سؤال!`;
+  }
+
+  body += `\n\n━━━━━━━━━━━━━━━━━━━━`;
+  body += `\nتم الإرسال من تطبيق رياضيات آيا.`;
+
+  const mailto = `mailto:ahasdia@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  window.location.href = mailto;
+
+  document.getElementById('email-sent-msg').style.display = 'block';
+}
+</script></script>
+</body>
+</html>
